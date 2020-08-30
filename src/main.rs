@@ -9,7 +9,7 @@ fn main() {
     let mut hex_to_bin;
     let mut num;
     let mut input = String::new();
-    let mut guess_str;
+    let mut parse_guess;
     loop {
         num = rng.gen_range(0,16);
         hex_to_bin = rng.gen_bool(0.5);
@@ -22,17 +22,18 @@ fn main() {
         }
 
         io::stdin().read_line(&mut input).expect("Failed to read input");
+        println!("You entered {}", input);
 
         match hex_to_bin {
             false => {
-                guess_str = i32::from_str_radix(&input, 2);
+                parse_guess = i32::from_str_radix(&input, 2);
             }
             true => {
-                guess_str = i32::from_str_radix(&input, 16);
+                parse_guess = i32::from_str_radix(&input, 16);
             }
         }
 
-        match guess_str {
+        match parse_guess {
             Ok(guess_num) => {
                 if guess_num == num {
                     println!("Yay!");
