@@ -6,10 +6,44 @@ fn main() {
      hex/binary/decimal on 4 bit numbers!");
 
     let mut rng = rand::thread_rng();
+    let mut hex_to_bin;
     let mut num;
+    let mut input = String::new();
+    let mut guess_str;
     loop {
         num = rng.gen_range(0,16);
-        println!("The number is {}", num);
+        hex_to_bin = rng.gen_bool(0.5);
+        match hex_to_bin {
+            true => println!("The number is {:04b} in binary, \
+            convert to hex in the form X.", num),
+
+            false => println!("The number is {:01X} in hex, \
+            convert to binary in the form XXXX.", num),
+        }
+
+        io::stdin().read_line(&mut input).expect("Failed to read input");
+
+        match hex_to_bin {
+            false => {
+                guess_str = i32::from_str_radix(&input, 2);
+            }
+            true => {
+                guess_str = i32::from_str_radix(&input, 16);
+            }
+        }
+
+        match guess_str {
+            Ok(guess_num) => {
+                if guess_num == num {
+                    println!("Yay!");
+                } else {
+                    println!("Booooo!");
+                }
+            }
+            Err(error) => panic!("oopers"),
+        }
+
+
         break;
     }
 }
