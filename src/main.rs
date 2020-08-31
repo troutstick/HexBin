@@ -2,27 +2,24 @@ use std::io;
 use rand::Rng;
 
 fn main() {
-    println!("Hello! Welcome to HexBin, a program that quizzes you on conversions between\
-     hex/binary/decimal on 4 bit numbers!");
+    println!("Hello! Welcome to HexBin, a program that quizzes you on conversions between \
+    hex/binary/decimal on 4 bit numbers!\n");
 
     let mut rng = rand::thread_rng();
-    let mut hex_to_bin;
-    let mut num;
-    let mut parse_guess;
     let exit_str = "If you want to exit, enter `q`.";
     loop {
         let mut input = String::new();
-        num = rng.gen_range(0,16);
-        hex_to_bin = rng.gen_bool(0.5);
+        let num = rng.gen_range(0,16);
+        let hex_to_bin = rng.gen_bool(0.5);
 
         let binary_fmt = format!("{:04b}", num);
         let hex_fmt = format!("{:01X}", num);
         let answer = if hex_to_bin {
-            println!("The number is {} in hex, \
+            println!("The number is 0x{} in hex, \
             convert to binary in the form XXXX.", hex_fmt);
             binary_fmt
         } else {
-            println!("The number is {} in binary, \
+            println!("The number is 0b{} in binary, \
             convert to hex in the form X.", binary_fmt);
             hex_fmt
         };
@@ -33,27 +30,21 @@ fn main() {
         println!("You entered {}.", input.trim());
 
         let slice: &str = &input.trim();
-
-        match hex_to_bin {
-            false => {
-                parse_guess = i32::from_str_radix(slice, 2);
-            }
-            true => {
-                parse_guess = i32::from_str_radix(slice, 16);
-            }
-        }
-
-        parse_guess = if hex_to_bin { i32::from_str_radix(slice, 2) } else { i32::from_str_radix(slice, 16) };
+        let parse_guess = if hex_to_bin {
+            i32::from_str_radix(slice, 2)
+        } else {
+            i32::from_str_radix(slice, 16)
+        };
 
         match parse_guess {
             Ok(guess_num) => {
                 if guess_num == num {
-                    println!("Yay! You did it!\n");
+                    println!("Yay! You did it!");
                 } else {
                     println!("Booooo! The answer was {}!", answer);
                 }
             }
-            Err(error) => {
+            Err(_) => {
                 println!("entered: {}", &input);
                 if input.trim().eq("q") {
                     println!("Quitting...");
@@ -63,6 +54,7 @@ fn main() {
                 }
             },
         }
+        println!();
     }
 }
 

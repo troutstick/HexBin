@@ -1,5 +1,5 @@
 [package]
-name = "HexBin"
+name = "hex_bin"
 version = "0.1.0"
 authors = ["Justin Thein <jthein@berkeley.edu>"]
 edition = "2018"
