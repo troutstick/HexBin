@@ -8,27 +8,29 @@ fn main() {
     let mut rng = rand::thread_rng();
     let mut hex_to_bin;
     let mut num;
-    let mut input = String::new();
     let mut parse_guess;
     let exit_str = "If you want to exit, enter `q`.";
     loop {
+        let mut input = String::new();
         num = rng.gen_range(0,16);
         hex_to_bin = rng.gen_bool(0.5);
-        match hex_to_bin {
-            true => println!("The number is {:04b} in binary, \
-            convert to hex in the form X.", num),
 
-            false => println!("The number is {:01X} in hex, \
-            convert to binary in the form XXXX.", num),
-        }
+        let binary_fmt = format!("{:04b}", num);
+        let hex_fmt = format!("{:01X}", num);
+        let answer = if hex_to_bin {
+            println!("The number is {} in hex, \
+            convert to binary in the form XXXX.", hex_fmt);
+            binary_fmt
+        } else {
+            println!("The number is {} in binary, \
+            convert to hex in the form X.", binary_fmt);
+            hex_fmt
+        };
 
         println!("{}", exit_str);
-        print!("Input: ");
 
         io::stdin().read_line(&mut input).expect("Failed to read input");
-        println!("You entered {}", input);
-
-        println!("Reference: {}", &input);
+        println!("You entered {}.", input.trim());
 
         let slice: &str = &input.trim();
 
@@ -41,12 +43,14 @@ fn main() {
             }
         }
 
+        parse_guess = if hex_to_bin { i32::from_str_radix(slice, 2) } else { i32::from_str_radix(slice, 16) };
+
         match parse_guess {
             Ok(guess_num) => {
                 if guess_num == num {
-                    println!("Yay!");
+                    println!("Yay! You did it!\n");
                 } else {
-                    println!("Booooo!");
+                    println!("Booooo! The answer was {}!", answer);
                 }
             }
             Err(error) => {
