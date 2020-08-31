@@ -67,7 +67,7 @@ mod tests {
         let mut num;
         for _ in 0..1000 {
             num = rng.gen_range(0,16);
-            if (num < 0) | (num > 15) {
+            if (num < 0) || (num > 15) {
                 panic!("Bad number");
             }
         }
