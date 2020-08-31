@@ -10,6 +10,7 @@ fn main() {
     let mut num;
     let mut input = String::new();
     let mut parse_guess;
+    let exit_str = "If you want to exit, enter `q`.";
     loop {
         num = rng.gen_range(0,16);
         hex_to_bin = rng.gen_bool(0.5);
@@ -21,15 +22,22 @@ fn main() {
             convert to binary in the form XXXX.", num),
         }
 
+        println!("{}", exit_str);
+        print!("Input: ");
+
         io::stdin().read_line(&mut input).expect("Failed to read input");
         println!("You entered {}", input);
 
+        println!("Reference: {}", &input);
+
+        let slice: &str = &input.trim();
+
         match hex_to_bin {
             false => {
-                parse_guess = i32::from_str_radix(&input, 2);
+                parse_guess = i32::from_str_radix(slice, 2);
             }
             true => {
-                parse_guess = i32::from_str_radix(&input, 16);
+                parse_guess = i32::from_str_radix(slice, 16);
             }
         }
 
@@ -41,11 +49,16 @@ fn main() {
                     println!("Booooo!");
                 }
             }
-            Err(error) => panic!("oopers"),
+            Err(error) => {
+                println!("entered: {}", &input);
+                if input.trim().eq("q") {
+                    println!("Quitting...");
+                    break;
+                } else {
+                    println!("Unable to parse input. {}", exit_str);
+                }
+            },
         }
-
-
-        break;
     }
 }
 
