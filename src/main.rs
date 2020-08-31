@@ -45,7 +45,6 @@ fn main() {
                 }
             }
             Err(_) => {
-                println!("entered: {}", &input);
                 if input.trim().eq("q") {
                     println!("Quitting...");
                     break;
